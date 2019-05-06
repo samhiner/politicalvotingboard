@@ -1,3 +1,11 @@
+class person {
+	constructor(politician) {
+		this.area = 3;
+		this.politician = politician;
+	}
+
+}
+
 function setupAreas() {
 	var colors = ['#163792', '#5176d3', '#84a9ff', '#A9A9A9', '#ff7d91', '#ff3655', '#d20000'];
 
@@ -6,10 +14,27 @@ function setupAreas() {
 	}
 }
 
-//for dragging
-//document.onmouseup = 
-//document.onmousedown = 
-//document.un
+var clickOn = []
+
+function startMovePerson(event) {
+	clickOn[event.srcElement.id] = true;
+}
+
+document.onmousemove = function() {
+	div = document.getElementById(clickOn.indexOf(true))
+	if (clickOn.indexOf(true) !== -1) {
+		if (clickOn[div.id]) {
+			div.style.position = 'fixed'
+			div.style.left = (event.clientX - 40) + 'px';
+			div.style.top = (event.clientY - 25) + 'px';
+		}
+	}
+}
+
+function endMovePerson(event) {
+	clickOn[event.srcElement.id] = false;
+	event.srcElement.position = 'absolute'
+}
 
 setupAreas();
 

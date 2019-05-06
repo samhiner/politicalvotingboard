@@ -16,4 +16,28 @@ body {
 	display: inline-block;
 	width: calc(100% / 7);
 	height: 100%;
+	top: 100px;
+	position: absolute;
+}
+.person {
+	background-color: white;
+	position: absolute;
+	width: 11.427vw;
+	left: 10%;
+	height: 30px;
+	margin-top: 10px;
+	z-index: 1;
+	text-align: center;
+
+	/*borrowed from https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting*/
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently used by Chrome/Opera*/
+}
+
+.person:hover {
+	cursor: pointer;
 }
