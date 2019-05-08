@@ -21,9 +21,8 @@ body {
 }
 .person {
 	background-color: white;
-	position: absolute;
-	width: 11.427vw;
-	left: 10%;
+	position: fixed;
+	width: calc(100%/7 * 0.8); /* 80% of one area */
 	height: 30px;
 	margin-top: 10px;
 	z-index: 1;

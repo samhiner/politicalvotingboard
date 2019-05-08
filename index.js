@@ -1,3 +1,5 @@
+//TODO actually make person widgets a class
+
 class person {
 	constructor(politician) {
 		this.area = 3;
@@ -7,7 +9,7 @@ class person {
 }
 
 function setupAreas() {
-	var colors = ['#163792', '#5176d3', '#84a9ff', '#A9A9A9', '#ff7d91', '#ff3655', '#d20000'];
+	var colors = ['#163792', '#5176d3', '#84a9ff', '#b4b4b4', '#ff7d91', '#ff3655', '#d20000'];
 
 	for (var x = 0; x < 7; x++) {
 		document.getElementById('area' + x).style.backgroundColor = colors[x];
@@ -18,7 +20,6 @@ var clickOn = false;
 
 function startMovePerson(event) {
 	div = event.srcElement
-	div.style.position = 'fixed';
 	div.style.zIndex = 2;
 	clickOn = [div.id, event.clientX - div.offsetLeft, event.clientY - div.offsetTop + 10];
 }
@@ -35,6 +36,15 @@ function endMovePerson(event) {
 	clickOn = false;
 	event.srcElement.style.position = 'absolute';
 	event.srcElement.style.zIndex = 1;
+	var screenWidth = document.documentElement.clientWidth;
+	var personLeft = div.offsetLeft + (screenWidth / 7 * 0.8 / 2);
+	var areaMargin;
+	for (var x = 0; x < 7; x++) {
+		if (screenWidth * x / 7 <= personLeft && personLeft < screenWidth * (x + 1) / 7) {
+			areaMargin = 1/7 * screenWidth / 10; //the margin is just 1/10 of the area size bc widgets are 80% of the area
+			event.srcElement.style.left = screenWidth * x / 7 + areaMargin + 'px';
+		}
+	}
 }
 
 setupAreas();
