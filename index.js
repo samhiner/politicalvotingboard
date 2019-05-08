@@ -14,26 +14,27 @@ function setupAreas() {
 	}
 }
 
-var clickOn = []
+var clickOn = false;
 
 function startMovePerson(event) {
-	clickOn[event.srcElement.id] = true;
+	div = event.srcElement
+	div.style.position = 'fixed';
+	div.style.zIndex = 2;
+	clickOn = [div.id, event.clientX - div.offsetLeft, event.clientY - div.offsetTop + 10];
 }
 
 document.onmousemove = function() {
-	div = document.getElementById(clickOn.indexOf(true))
-	if (clickOn.indexOf(true) !== -1) {
-		if (clickOn[div.id]) {
-			div.style.position = 'fixed'
-			div.style.left = (event.clientX - 40) + 'px';
-			div.style.top = (event.clientY - 25) + 'px';
-		}
+	if (clickOn !== false) {
+		div = document.getElementById(clickOn[0]);
+		div.style.left = String(event.clientX - clickOn[1]) + 'px';
+		div.style.top = String(event.clientY - clickOn[2]) + 'px';
 	}
 }
 
 function endMovePerson(event) {
-	clickOn[event.srcElement.id] = false;
-	event.srcElement.position = 'absolute'
+	clickOn = false;
+	event.srcElement.style.position = 'absolute';
+	event.srcElement.style.zIndex = 1;
 }
 
 setupAreas();
