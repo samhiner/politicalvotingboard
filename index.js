@@ -1,12 +1,27 @@
 //TODO actually make person widgets a class
 
-class person {
-	constructor(politician) {
-		this.area = 3;
-		this.politician = politician;
-	}
+class Person {
+	static numWidgets = 0;
 
+	constructor(name) {
+		this.area = 3;
+		this.name = name;
+		var widget = document.createElement('span');
+		widget.id = String(this.constructor.numWidgets);
+		widget.className = 'person';
+		widget.onmousedown = startMovePerson;
+		widget.onmouseup = endMovePerson;
+		widget.appendChild(document.createTextNode(name));
+		document.getElementById('board').appendChild(widget);
+		this.constructor.numWidgets += 1;
+	}
 }
+
+var an = new Person('a');
+var an = new Person('a');
+var an = new Person('a');
+var an = new Person('a');
+var an = new Person('a');
 
 function setupAreas() {
 	var colors = ['#163792', '#5176d3', '#84a9ff', '#b4b4b4', '#ff7d91', '#ff3655', '#d20000'];
