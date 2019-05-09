@@ -1,4 +1,5 @@
 //TODO actually make person widgets a class
+//TODO make mouseup a document function so that it gets caught when you are moving fast and you mouseup before the widget catches up with you
 
 class Person {
 	static numWidgets = 0;
@@ -34,9 +35,13 @@ function setupAreas() {
 var clickOn = false;
 
 function startMovePerson(event) {
-	div = event.srcElement
+	div = event.srcElement;
 	div.style.zIndex = 2;
 	clickOn = [div.id, event.clientX - div.offsetLeft, event.clientY - div.offsetTop + 10];
+}
+
+function pxToNum(px) {
+	return Number(px.slice(0, -2))
 }
 
 document.onmousemove = function() {
@@ -44,20 +49,48 @@ document.onmousemove = function() {
 		div = document.getElementById(clickOn[0]);
 		div.style.left = String(event.clientX - clickOn[1]) + 'px';
 		div.style.top = String(event.clientY - clickOn[2]) + 'px';
+
+		console.log(event);
+
+		if (pxToNum(div.style.top) <= 100) {
+			div.style.top = '101px'; //this way it doesn't get stuck barely able to move out of 100px bc the drag would keep ending
+			endMovePerson(div);
+		} else if (pxToNum(div.style.top) + 30 >= document.documentElement.clientHeight) {
+			div.style.top = 'auto';
+			div.style.bottom = '0px';
+			endMovePerson(div);
+		}
+
+		if (pxToNum(div.style.left) <= 0) {
+			div.style.left = '0px'; //this way it doesn't get stuck barely able to move out of 100px bc the drag would keep ending
+			endMovePerson(div);
+		} else if (pxToNum(div.style.left) + document.documentElement.clientWidth / 7 * 0.8 >= document.documentElement.clientWidth) {
+			div.style.left = 'auto';
+			div.style.right = '0px';
+			endMovePerson(div);
+		}
 	}
 }
 
 function endMovePerson(event) {
+	//TODO make this less messy
+	if (event.srcElement !== undefined) {
+		//for when this func is called by mouseup on specific widget
+		//this is a band aid that will need to be replaced soon
+		var div = event.srcElement;
+	} else {
+		var div = event
+	}
 	clickOn = false;
-	event.srcElement.style.position = 'absolute';
-	event.srcElement.style.zIndex = 1;
+	div.style.position = 'absolute';
+	div.style.zIndex = 1;
 	var screenWidth = document.documentElement.clientWidth;
 	var personLeft = div.offsetLeft + (screenWidth / 7 * 0.8 / 2);
 	var areaMargin;
 	for (var x = 0; x < 7; x++) {
 		if (screenWidth * x / 7 <= personLeft && personLeft < screenWidth * (x + 1) / 7) {
 			areaMargin = 1/7 * screenWidth / 10; //the margin is just 1/10 of the area size bc widgets are 80% of the area
-			event.srcElement.style.left = screenWidth * x / 7 + areaMargin + 'px';
+			div.style.left = screenWidth * x / 7 + areaMargin + 'px';
 		}
 	}
 }
