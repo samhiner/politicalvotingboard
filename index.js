@@ -1,28 +1,37 @@
 //TODO actually make person widgets a class
 //TODO make mouseup a document function so that it gets caught when you are moving fast and you mouseup before the widget catches up with you
+//TODO make it so that widgets collide better
+//TODO make Person.area update with dragging; will require connecting widget to class better; or maybe keep a count of each area instead [far-right: 3, right: 2, etc]
 
 class Person {
-	static numWidgets = 0;
 
-	constructor(name) {
-		this.area = 3;
+	constructor(name, area) {
 		this.name = name;
-		var widget = document.createElement('span');
-		widget.id = String(this.constructor.numWidgets);
-		widget.className = 'person';
-		widget.onmousedown = startMovePerson;
-		widget.onmouseup = endMovePerson;
-		widget.appendChild(document.createTextNode(name));
-		document.getElementById('board').appendChild(widget);
+		this.widget = document.createElement('span');
+		this.widget.id = String(this.constructor.numWidgets);
+		this.widget.className = 'person';
+		this.widget.onmousedown = startMovePerson;
+		this.widget.onmouseup = endMovePerson;
+		this.widget.appendChild(document.createTextNode(name));
+		document.getElementById('board').appendChild(this.widget);
 		this.constructor.numWidgets += 1;
+		this.moveTo(area)
+	}
+
+	moveTo(area) {
+		this.area = area;
+		//size of an area * (areasOnLeft + 0.1). so we are doing what area it is on and 0.1 for margin then scaling it to screen
+		this.widget.style.left = (document.documentElement.clientWidth / 7) * (area  + 0.1) + "px";
 	}
 }
 
-var an = new Person('a');
-var an = new Person('a');
-var an = new Person('a');
-var an = new Person('a');
-var an = new Person('a');
+Person.numWidgets = 0;
+
+var an = new Person('a', 1);
+var an = new Person('a', 1);
+var an = new Person('a', 2);
+var an = new Person('a', 3);
+var an = new Person('a', 4);
 
 function setupAreas() {
 	var colors = ['#163792', '#5176d3', '#84a9ff', '#b4b4b4', '#ff7d91', '#ff3655', '#d20000'];
@@ -49,8 +58,6 @@ document.onmousemove = function() {
 		div = document.getElementById(clickOn[0]);
 		div.style.left = String(event.clientX - clickOn[1]) + 'px';
 		div.style.top = String(event.clientY - clickOn[2]) + 'px';
-
-		console.log(event);
 
 		if (pxToNum(div.style.top) <= 100) {
 			div.style.top = '101px'; //this way it doesn't get stuck barely able to move out of 100px bc the drag would keep ending
