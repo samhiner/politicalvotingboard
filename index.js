@@ -5,17 +5,19 @@
 
 class Person {
 
-	constructor(name, area) {
+	constructor(name, area, party) {
 		this.name = name;
+		this.party = party;
 		this.widget = document.createElement('span');
-		this.widget.id = String(this.constructor.numWidgets);
+		this.widget.id = String(this.constructor.people.length);
 		this.widget.className = 'person';
 		this.widget.onmousedown = startMovePerson;
 		this.widget.onmouseup = endMovePerson;
 		this.widget.appendChild(document.createTextNode(name));
 		document.getElementById('board').appendChild(this.widget);
-		this.constructor.numWidgets += 1;
 		this.moveTo(area)
+
+		this.widget.style.top = '101px';
 	}
 
 	moveTo(area) {
@@ -23,15 +25,23 @@ class Person {
 		//size of an area * (areasOnLeft + 0.1). so we are doing what area it is on and 0.1 for margin then scaling it to screen
 		this.widget.style.left = (document.documentElement.clientWidth / 7) * (area  + 0.1) + "px";
 	}
+
+	static alongPartyLines() {
+		for x
+	}
 }
 
-Person.numWidgets = 0;
+Person.people = [];
 
-var an = new Person('a', 1);
-var an = new Person('a', 1);
-var an = new Person('a', 2);
-var an = new Person('a', 3);
-var an = new Person('a', 4);
+var a = new Person('a', 1);
+var b = new Person('a', 1);
+var c = new Person('a', 2);
+var d = new Person('a', 3);
+var e = new Person('a', 4);
+
+
+e.moveTo(2);
+
 
 function setupAreas() {
 	var colors = ['#163792', '#5176d3', '#84a9ff', '#b4b4b4', '#ff7d91', '#ff3655', '#d20000'];
@@ -104,7 +114,9 @@ function endMovePerson(event) {
 
 setupAreas();
 
-//EVERYTHING BELOW THIS COMMENT IS INCOMPLETE
+
+/* This is all incomplete code to allow for a variable number of areas. Not sure if I'll finish it.
+
 
 //incomplete function to let you do a variable number of areas
 function changeAreas(numAreas) {
@@ -131,13 +143,13 @@ function shadeChange() {
 
 }
 
-/**
+/ **
  * this returns a constant that makes your leftmost color ((areasPerSide + 1) / 2) * 5 x's
  * brighter than normal blue every area after this on the left is 5 x's darker, so the
  * middle of the left is normal blue (or normal blue is between the two colors closest to
  * middle color if areasPerSide is even)
- */
+ * /
 //putting a negative on this switches it from brighter to darker
 function getColor(areasPerSide) {
 	return ((areasPerSide - 1) / 2) * 5;
-}
+}*/
